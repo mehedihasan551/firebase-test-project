@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Singup.css";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../providers/AuthProvider";
 
 const Singup = () => {
 const[error,seterror]=useState('')
+const {createuser}=useContext(AuthContext)
+
 const handleSignup=event=>{
     event.preventDefault();
 
@@ -12,6 +15,7 @@ const handleSignup=event=>{
     const password= form.password.value;
     const confirm= form.confirm.value;
     console.log(email,password,confirm);
+    seterror('')
     if(password !==confirm){
         seterror('password is wrong')
         return
@@ -20,6 +24,20 @@ const handleSignup=event=>{
         seterror('please inter 6 digit')
         return
     }
+    createuser(email,password)
+    .then((result) => {
+ 
+      const loggeduser = result.user;
+      console.log(loggeduser);
+   
+    })
+    .catch((error) => {
+      console.log(error);
+      seterror (error.message);
+      
+
+    });
+  
 }
 
   return (
